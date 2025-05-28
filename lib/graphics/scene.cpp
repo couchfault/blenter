@@ -81,9 +81,8 @@ auto Scene::render(float z) const -> void {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // ---------------------------------------------------------
-    // Render layer to a fb
+    // Render fb texture
     // ---------------------------------------------------------
-
     shader.setMat4("view", outCam.view());
     shader.setMat4("proj", outCam.projection());
     shader.setFloat("radius", blur);
@@ -97,6 +96,7 @@ auto Scene::render(float z) const -> void {
     renderEntity(*display, shader, outCam);
 
     shader.setFloat("radius", 0.f);
+    shader.setFloat("desaturate", 0.f);
 }
 
 auto createEntity(Scene& scene) -> Entity* {

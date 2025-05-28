@@ -25,16 +25,14 @@ add_executable(lighting main.cpp
         lib/graphics/cursor.hpp
         lib/graphics/cursor_type.hpp
         block.hpp
-        block_entity.cpp
-        block_entity.hpp
         lib/graphics/view.cpp
         lib/graphics/view.hpp
         lib/graphics/window.hpp
         lib/graphics/window.cpp
         lib/graphics/scene.cpp
         lib/graphics/scene.hpp
-        objects_scene.cpp
-        objects_scene.hpp
+        object_editor.cpp
+        object_editor.hpp
         engine.cpp
         engine.hpp
         ui_scene.cpp
@@ -43,8 +41,8 @@ add_executable(lighting main.cpp
         lib/graphics/entity.hpp
         lib/graphics/event.cpp
         lib/graphics/event.hpp
-        editor_scene.cpp
-        editor_scene.hpp
+        level_editor.cpp
+        level_editor.hpp
         lib/graphics/style.cpp
         lib/graphics/style.hpp
         lib/graphics/mouse.cpp

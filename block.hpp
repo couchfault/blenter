@@ -73,7 +73,6 @@ struct Block {
         return _size;
     }
 
-private:
     std::filesystem::path _path;
     std::vector<unsigned int> _textures;
 

@@ -9,9 +9,9 @@
 #include "lib/graphics/view.hpp"
 #include "lib/graphics/window.hpp"
 
-#include "editor_scene.hpp"
 #include "engine.hpp"
-#include "objects_scene.hpp"
+#include "level_editor.hpp"
+#include "object_editor.hpp"
 #include "shapes.hpp"
 #include "ui_scene.hpp"
 
@@ -40,8 +40,6 @@ auto setupOpenGl() {
     glEnable(GL_ALPHA_TEST);
 }
 
-EditorScene* levelEditor;
-ObjectsScene* objectEditor;
 UiScene* ui;
 
 Animation showEditorAnim;// TODO: move
@@ -74,15 +72,21 @@ auto main() -> int {
     // ---------------------------------------------------------------
     // Create scenes
     // ---------------------------------------------------------------
-    levelEditor = createScene<EditorScene>(view, engine);
-    objectEditor = createScene<ObjectsScene>(view, engine);
-    objectEditor->flags |= SF_Hidden;
+    auto scene = createScene<Scene>(view);
+    auto levelEditor = LevelEditor{engine, *scene};
+    init(levelEditor, *scene);
+
+    scene = createScene<Scene>(view);
+    scene->flags |= SF_Hidden;
+    auto objectEditor = ObjectEditor{engine, *scene};
+    init(objectEditor, *scene);
+
     ui = createScene<UiScene>(view, engine);
 
     // ---------------------------------------------------------------
     // Callbacks
     // ---------------------------------------------------------------
-    view.onTick = [&view] {
+    view.onTick = [&view, &levelEditor] {
         if (showEditorAnim.running) {
             const auto now = high_resolution_clock::now();
             const auto t = (float)duration_cast<milliseconds>(now - showEditorAnim.start).count() / showEditorAnim.duration + showEditorAnim.startT;
@@ -91,10 +95,10 @@ auto main() -> int {
             if (t >= 1.0f) {
                 showEditorAnim.running = false;
             }
-            const auto val = res * 0.25f * levelEditor->cam._front;
-            levelEditor->cam._pos = view.startPos - val;
-            levelEditor->blur = res * 10.f;
-            levelEditor->desat = res * 0.5f;
+            const auto val = res * 0.25f * levelEditor.scene.cam._front;
+            levelEditor.scene.cam._pos = view.startPos - val;
+            levelEditor.scene.blur = res * 10.f;
+            levelEditor.scene.desat = res * 0.5f;
         }
     };
 
