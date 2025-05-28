@@ -7,7 +7,6 @@
 #include <ostream>
 #include <istream>
 #include "../graphics/entity.hpp"
-#include "cursor_type.hpp"
 #include "glm_vec.hpp"
 #include "glm_mat.hpp"
 
