@@ -1,0 +1,15 @@
+{
+  "name": "lighting",
+  "version-string":  "1.0.0",
+  "dependencies": [
+    "glfw3",
+    "glm",
+    "rapidjson",
+    "stb",
+    {
+      "name": "glad",
+      "default-features": false,
+      "features": ["gl-api-33", "loader"]
+    }
+  ]
+}

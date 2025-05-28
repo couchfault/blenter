@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "default",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "GLAD_DIR": "$env{VCPKG_ROOT}/buildtrees/glad/x64-osx-rel/src"
+      }
+    }
+  ]
+}
