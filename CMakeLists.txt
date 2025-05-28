@@ -51,7 +51,15 @@ add_executable(lighting main.cpp
         lib/graphics/keyboard.cpp
         lib/graphics/keyboard.hpp
         lib/graphics/animate.cpp
-        lib/graphics/animate.hpp)
+        lib/graphics/animate.hpp
+        lib/serialize/glm_vec.hpp
+        lib/serialize/tranform.hpp
+        lib/serialize/glm_mat.hpp
+        lib/serialize/style.hpp
+        lib/serialize/cursor_type.hpp
+        lib/serialize/render_mode.hpp
+        lib/serialize/entity.hpp
+)
 
 target_link_libraries(lighting PRIVATE glad::glad)
 target_link_libraries(lighting PRIVATE glfw)

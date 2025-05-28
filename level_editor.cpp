@@ -13,6 +13,7 @@
 #include "lib/graphics/scene.hpp"
 #include "lib/graphics/view.hpp"
 #include "lib/graphics/window.hpp"
+#include "lib/serialize/entity.hpp"
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
@@ -37,6 +38,14 @@ auto init(LevelEditor& editor, Scene& scene) -> void {
     editor.floor = floor;
 
     scene.onProcessInput = [&editor, &scene] {
+        if (keyStates.at(GLFW_KEY_O).action == Action::Press) {
+            std::cout << "Saving block entities to: " << editor.saveFile << std::endl;
+            auto os = std::ofstream(editor.saveFile, std::ios::binary);
+            writeEntities(os, editor.blockEntities);
+            os.close();
+            std::cout << "Saved " << editor.blockEntities.size() << " entities" << std::endl;
+        }
+
         if (keyStates.at(GLFW_KEY_F).action == Action::Press) {
             const auto ent = createEntity(scene);
             ent->vao = genVao(RenderMode::Mode3D);

@@ -18,6 +18,7 @@ struct Scene;
 struct LevelEditor {
     Engine& engine;
     Scene& scene;
+    const std::string& saveFile;
     Entity* floor;
     std::vector<Entity*> blockEntities;
     glm::vec3 placePos;

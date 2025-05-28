@@ -1,5 +1,8 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
+#include <fstream>
+#include <iostream>
+
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include "lib/graphics/animate.hpp"
@@ -14,6 +17,7 @@
 #include "object_editor.hpp"
 #include "shapes.hpp"
 #include "ui_scene.hpp"
+#include "lib/serialize/entity.hpp"
 
 auto setupOpenGl() {
     // ---------------------------------------------------------------------------------------------------------------
@@ -44,7 +48,21 @@ UiScene* ui;
 
 Animation showEditorAnim;// TODO: move
 
-auto main() -> int {
+auto main(int argc, const char* argv[]) -> int {
+    const auto saveFile = argc > 1 ? std::string(argv[1]) : "default.bmf";
+    std::cout << "Selected save file: " << saveFile << std::endl;
+
+    // ---------------------------------------------------------------
+    // Create save file if it doesn't exist
+    // ---------------------------------------------------------------
+    if (!std::filesystem::exists(saveFile)) {
+        std::cout << "Save file does not exist, creating..." << std::endl;
+        size_t entityCount = 0;
+        std::ofstream os(saveFile, std::ios::binary);
+        os << entityCount;
+        os.close();
+    }
+
     const auto path = std::filesystem::path{
         "example/"};
 
@@ -73,7 +91,7 @@ auto main() -> int {
     // Create scenes
     // ---------------------------------------------------------------
     auto scene = createScene<Scene>(view);
-    auto levelEditor = LevelEditor{engine, *scene};
+    auto levelEditor = LevelEditor{engine, *scene, saveFile};
     init(levelEditor, *scene);
 
     scene = createScene<Scene>(view);
@@ -82,6 +100,14 @@ auto main() -> int {
     init(objectEditor, *scene);
 
     ui = createScene<UiScene>(view, engine);
+
+    // ---------------------------------------------------------------
+    // Load entities
+    // ---------------------------------------------------------------
+    auto is = std::ifstream(saveFile, std::ios::binary);
+    auto numEntities = readEntities(is, *scene, levelEditor.blockEntities);
+    is.close();
+    std::cout << "Loaded " << numEntities << " entities from save file: " << saveFile << std::endl;
 
     // ---------------------------------------------------------------
     // Callbacks
